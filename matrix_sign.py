@@ -59,7 +59,7 @@ class MatrixSign:
     def color(self, value):
         green = int(value[:2], 16)
         red = int(value[2:4], 16)
-        blue = int(color[4:], 16)
+        blue = int(value[4:], 16)
         self._color = Color(green, red, blue)
         self._display_message()
 

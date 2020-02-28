@@ -2,10 +2,10 @@
 # NeoPixel Matrix Web Server
 from flask import Flask
 
-from matrix_sign import Sign
+from matrix_sign import MatrixSign
 
 
-led_sign = Sign()
+led_sign = MatrixSign()
 
 
 app = Flask(__name__)

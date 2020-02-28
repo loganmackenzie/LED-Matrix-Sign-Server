@@ -84,7 +84,7 @@ class MatrixSign:
         array = self._get_message_array(self._get_display_matrix())
 
         for i in range(self.led_matrix.numPixels()):
-            color = current_color if array[i] else Color(0, 0, 0)
+            color = self.color if array[i] else Color(0, 0, 0)
             self.led_matrix.setPixelColor(i, color)
             if self.transition:
                 self.led_matrix.show()

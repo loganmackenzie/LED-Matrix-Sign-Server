@@ -114,8 +114,7 @@ class MatrixSign:
 
     def _display_array(self, array, use_color=False):
         for i in range(self.led_matrix.numPixels()):
-            if use_color:
-                print(f'{i} - {array[i]}')
+            if use_color and isinstance(array[i], str):
                 green = int(array[i][:2], 16)
                 red = int(array[i][2:4], 16)
                 blue = int(array[i][4:], 16)
@@ -124,6 +123,7 @@ class MatrixSign:
                 color = self.color
             else:
                 color = Color(0, 0, 0)
+
             self.led_matrix.setPixelColor(i, color)
             if self.transition:
                 self.led_matrix.show()

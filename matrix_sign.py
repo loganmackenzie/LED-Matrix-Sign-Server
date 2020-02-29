@@ -28,7 +28,7 @@ class MatrixSign:
         self.x_position = 0
         self.y_position = 0
         self._scroll = False
-        self.scroll_delay = 0.100   # Scroll display in seconds
+        self.scroll_delay = 0.250   # Scroll display in seconds
         self._brightness = 255      # Set to 0 for darkest and 255 for brightest
         self.display_delay = 0.010  # Seconds
         self.transition = False     # Transition on display
@@ -63,11 +63,14 @@ class MatrixSign:
 
     @color.setter
     def color(self, value):
+        self._color = self._parse_color(value)
+        self._display_message()
+
+    def _parse_color(self, value):
         green = int(value[:2], 16)
         red = int(value[2:4], 16)
         blue = int(value[4:], 16)
-        self._color = Color(green, red, blue)
-        self._display_message()
+        return Color(green, red, blue)
 
     @property
     def message(self):
@@ -84,10 +87,11 @@ class MatrixSign:
 
     @scroll.setter
     def scroll(self, value):
-        if value:
+        # Make sure that this doesn't loop
+        if value and not self._scroll:
             self._scroll = True
             self.scrolling()
-        else:
+        elif not value and self._scroll:
             self._scroll = False
 
     def scrolling(self):
@@ -95,6 +99,7 @@ class MatrixSign:
             self.x_position += 1
             array = self._get_message_array(self._get_display_matrix())
             self._display_array(array)
+            print(array)
             t = Timer(self.scroll_delay, self.scrolling)
             t.start()
 
@@ -115,10 +120,7 @@ class MatrixSign:
     def _display_array(self, array, use_color=False):
         for i in range(self.led_matrix.numPixels()):
             if use_color and isinstance(array[i], str):
-                green = int(array[i][:2], 16)
-                red = int(array[i][2:4], 16)
-                blue = int(array[i][4:], 16)
-                color = Color(green, red, blue)
+                color = self._parse_color(array[i])
             elif array[i]:
                 color = self.color
             else:

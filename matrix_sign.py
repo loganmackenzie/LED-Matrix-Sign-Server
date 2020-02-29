@@ -1,4 +1,5 @@
 """ LED matrix sign """
+from threading import Timer
 import time
 
 from neopixel import *
@@ -25,11 +26,15 @@ class MatrixSign:
         self._color = Color(0, 255, 0)
         self.x_position = 0
         self.y_position = 0
-        self.scroll = False
+        self._scroll = False
+        self.scroll_delay = 0.100   # Scroll display in seconds
         self._brightness = 255      # Set to 0 for darkest and 255 for brightest
         self.display_delay = 0.010  # Seconds
         self.transition = True      # Transition on display
         self.message_matrix = None
+
+        self.chess_index = 0
+        self.chess_move_delay = 2
 
         self.led_matrix = Adafruit_NeoPixel(
             self.LED_COUNT,
@@ -72,6 +77,26 @@ class MatrixSign:
         self._message = value
         self._display_message()
 
+    @property
+    def scroll(self):
+        return self._scroll
+
+    @scroll.setter
+    def scroll(self, value):
+        if value:
+            self._scroll = True
+            self.scrolling()
+        else:
+            self._scroll = False
+
+    def scrolling(self):
+        self.x_position += 1
+        array = self._get_message_array(self._get_display_matrix())
+        self._display_array(array)
+        if self.scroll:
+            t = Timer(self.scroll_delay, self.scrolling)
+            t.start()
+
     def fill(self, color):
         self.led_matrix.fill(color)
 
@@ -82,7 +107,9 @@ class MatrixSign:
         """ Display the message """
         self.message_matrix = lookup(self.message)
         array = self._get_message_array(self._get_display_matrix())
+        self._display_array(array)
 
+    def _display_array(self, array):
         for i in range(self.led_matrix.numPixels()):
             color = self.color if array[i] else Color(0, 0, 0)
             self.led_matrix.setPixelColor(i, color)
@@ -90,7 +117,7 @@ class MatrixSign:
                 self.led_matrix.show()
                 time.sleep(self.display_delay)
 
-        self.led_matrix.show()
+                self.led_matrix.show()
 
     def _get_message_array(self, display_matrix):
         """ Get the 1D array of all the matrix """
@@ -111,8 +138,16 @@ class MatrixSign:
             self.scroll = False
             return self.message_matrix
         scroll = True
-        x_end = self.x_position + GRID_WIDTH
+        x_end = self.x_position + self.GRID_WIDTH
         if x_end <= message_length:
             return [self.message_matrix[i][self.x_position:x_end] for i in rnage(self.GRID_HEIGHT)]
         x_end = x_end % self.GRID_WIDTH
         return [self.message_matrix[:x_end] + self.message_matrix[self.x_position:] for i in range(self.GRID_HEIGHT)]
+
+    def chess(self):
+        self.message_matrix = CHESS_GAME_MOVES[self.chess_index]
+        array = self._get_message_array(self._get_display_matrix())
+        self._display_array(array)
+        self.chess_index += 1
+        t = Timer(self.chess_move_delay, self.chess)
+        t.start()

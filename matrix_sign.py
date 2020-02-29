@@ -99,7 +99,9 @@ class MatrixSign:
             t.start()
 
     def fill(self, color):
-        self.led_matrix.fill(color)
+        for i in range(self.led_matrix.numPixels()):
+            self.led_matrix.setPixelColor(i, color)
+        self.led_matrix.show()
 
     def clear(self):
         self.fill(Color(0, 0, 0))
@@ -118,7 +120,7 @@ class MatrixSign:
                 self.led_matrix.show()
                 time.sleep(self.display_delay)
 
-                self.led_matrix.show()
+        self.led_matrix.show()
 
     def _get_message_array(self, display_matrix):
         """ Get the 1D array of all the matrix """
@@ -151,5 +153,6 @@ class MatrixSign:
         array = self._get_message_array(self._get_display_matrix())
         self._display_array(array)
         self.chess_index += 1
-        t = Timer(self.chess_move_delay, self.chess)
-        t.start()
+        if self.chess_index < len(CHESS_GAME_MOVES):
+            t = Timer(self.chess_move_delay, self.chess)
+            t.start()

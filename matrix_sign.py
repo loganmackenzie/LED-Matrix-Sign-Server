@@ -112,7 +112,7 @@ class MatrixSign:
         array = self._get_message_array(self._get_display_matrix())
         self._display_array(array)
 
-    def _display_array(self, array, use_color=True):
+    def _display_array(self, array, use_color=False):
         for i in range(self.led_matrix.numPixels()):
             if use_color:
                 green = int(array[i][:2], 16)

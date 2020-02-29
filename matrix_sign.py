@@ -115,6 +115,7 @@ class MatrixSign:
     def _display_array(self, array, use_color=False):
         for i in range(self.led_matrix.numPixels()):
             if use_color:
+                print(f'{i} - {array[i]}')
                 green = int(array[i][:2], 16)
                 red = int(array[i][2:4], 16)
                 blue = int(array[i][4:], 16)

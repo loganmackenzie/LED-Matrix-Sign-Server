@@ -35,5 +35,11 @@ def set_color(color):
     return 'OK\n', 200
 
 
+@app.route('/chess')
+def chess():
+    led_sign.chess()
+    return 'OK\n', 200
+    
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

@@ -30,7 +30,7 @@ class MatrixSign:
         self.scroll_delay = 0.100   # Scroll display in seconds
         self._brightness = 255      # Set to 0 for darkest and 255 for brightest
         self.display_delay = 0.010  # Seconds
-        self.transition = True      # Transition on display
+        self.transition = False     # Transition on display
         self.message_matrix = None
 
         self.chess_index = 0
@@ -137,7 +137,7 @@ class MatrixSign:
         if message_length <= self.GRID_WIDTH:
             self.scroll = False
             return self.message_matrix
-        scroll = True
+        self.scroll = True
         x_end = self.x_position + self.GRID_WIDTH
         if x_end <= message_length:
             return [self.message_matrix[i][self.x_position:x_end] for i in range(self.GRID_HEIGHT)]

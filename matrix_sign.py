@@ -112,9 +112,17 @@ class MatrixSign:
         array = self._get_message_array(self._get_display_matrix())
         self._display_array(array)
 
-    def _display_array(self, array):
+    def _display_array(self, array, use_color=True):
         for i in range(self.led_matrix.numPixels()):
-            color = self.color if array[i] else Color(0, 0, 0)
+            if use_color:
+                green = int(array[i][:2], 16)
+                red = int(array[i][2:4], 16)
+                blue = int(array[i][4:], 16)
+                color = Color(green, red, blue)
+            elif array[i]:
+                color = self.color
+            else:
+                color = Color(0, 0, 0)
             self.led_matrix.setPixelColor(i, color)
             if self.transition:
                 self.led_matrix.show()
@@ -151,7 +159,7 @@ class MatrixSign:
     def chess(self):
         self.message_matrix = CHESS_GAME_MOVES[self.chess_index]
         array = self._get_message_array(self._get_display_matrix())
-        self._display_array(array)
+        self._display_array(array, use_color=True)
         self.chess_index += 1
         if self.chess_index < len(CHESS_GAME_MOVES):
             t = Timer(self.chess_move_delay, self.chess)

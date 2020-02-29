@@ -140,7 +140,7 @@ class MatrixSign:
         scroll = True
         x_end = self.x_position + self.GRID_WIDTH
         if x_end <= message_length:
-            return [self.message_matrix[i][self.x_position:x_end] for i in rnage(self.GRID_HEIGHT)]
+            return [self.message_matrix[i][self.x_position:x_end] for i in range(self.GRID_HEIGHT)]
         x_end = x_end % self.GRID_WIDTH
         return [self.message_matrix[:x_end] + self.message_matrix[self.x_position:] for i in range(self.GRID_HEIGHT)]
 

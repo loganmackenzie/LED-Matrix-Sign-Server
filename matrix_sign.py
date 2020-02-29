@@ -5,6 +5,7 @@ import time
 from neopixel import *
 
 from ascii_character_set import lookup
+from chess import CHESS_GAME_MOVES
 
 
 class MatrixSign:
@@ -90,10 +91,10 @@ class MatrixSign:
             self._scroll = False
 
     def scrolling(self):
-        self.x_position += 1
-        array = self._get_message_array(self._get_display_matrix())
-        self._display_array(array)
         if self.scroll:
+            self.x_position += 1
+            array = self._get_message_array(self._get_display_matrix())
+            self._display_array(array)
             t = Timer(self.scroll_delay, self.scrolling)
             t.start()
 
@@ -137,7 +138,8 @@ class MatrixSign:
         if message_length <= self.GRID_WIDTH:
             self.scroll = False
             return self.message_matrix
-        self.scroll = True
+        if not self.scroll:
+            self.scroll = True
         x_end = self.x_position + self.GRID_WIDTH
         if x_end <= message_length:
             return [self.message_matrix[i][self.x_position:x_end] for i in range(self.GRID_HEIGHT)]

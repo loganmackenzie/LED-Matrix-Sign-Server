@@ -89,6 +89,7 @@ class MatrixSign:
     def scroll(self, value):
         # Make sure that this doesn't loop
         if value and not self._scroll:
+            self.x_position = 0
             self._scroll = True
             self.scrolling()
         elif not value and self._scroll:
@@ -151,13 +152,13 @@ class MatrixSign:
         if message_length <= self.GRID_WIDTH:
             self.scroll = False
             return self.message_matrix
-        if not self.scroll:
-            self.scroll = True
-        x_end = self.x_position + self.GRID_WIDTH
-        if x_end <= message_length:
+
+        self.scroll = True
+        self.x_position = self.x_position % message_length
+        x_end = (self.x_position + self.GRID_WIDTH) % message_length
+        if self.x_position < x_end:
             return [self.message_matrix[i][self.x_position:x_end] for i in range(self.GRID_HEIGHT)]
-        x_end = x_end % self.GRID_WIDTH
-        return [self.message_matrix[:x_end] + self.message_matrix[self.x_position:] for i in range(self.GRID_HEIGHT)]
+        return [self.message_matrix[i][self.x_position:] + self.message_matrix[i][:x_end] for i in range(self.GRID_HEIGHT)]
 
     def chess(self):
         self.message_matrix = CHESS_GAME_MOVES[self.chess_index]

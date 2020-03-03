@@ -100,7 +100,6 @@ class MatrixSign:
             self.x_position += 1
             array = self._get_message_array(self._get_display_matrix())
             self._display_array(array)
-            print(array)
             t = Timer(self.scroll_delay, self.scrolling)
             t.start()
 

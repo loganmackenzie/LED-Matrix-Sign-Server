@@ -24,7 +24,7 @@ class MatrixSign:
 
     def __init__(self):
         self._message = ''
-        self._color = Color(0, 255, 0)
+        self._color = Color(0, 50, 0)
         self.x_position = 0
         self.y_position = 0
         self._scroll = False

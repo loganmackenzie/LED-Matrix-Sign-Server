@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>CSS Template</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the header */
+header {
+  background-color: #666;
+  padding: 30px;
+  text-align: center;
+  font-size: 35px;
+  color: white;
+}
+
+article {
+  float: left;
+  padding: 20px;
+  width: 70%;
+  background-color: #f1f1f1;
+}
+
+/* Clear floats after the columns */
+section:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+input {
+	width: 200px;
+}
+
+</style>
+</head>
+<body>
+
+<form action="/update_display" id="config_form">
+    <h2>Message</h2>
+    <section>
+    	<article>
+        	<input type="text" name="message" value="Busy!">
+        </article>
+    </section>
+
+    <h2>Color</h2>
+    <section>
+    	<article>
+        	<input type="color" name="message_color" value="#110000">
+        </article>
+    </section>
+
+    <h2>Scrolling</h2>
+    <section>
+        <article>
+            <input type="checkbox" name="scroll" value=true>
+            <input type="number" name="scroll_delay" min="0.1" step="0.1">
+        </article>
+    </section>
+
+    <h2>Transition</h2>
+    <section>
+        <article>
+            <input type="checkbox" name="transition" value="false">
+            <input type="number" name="transition_delay" min="0.010" step="0.005">
+        </article>
+    </section>
+
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>

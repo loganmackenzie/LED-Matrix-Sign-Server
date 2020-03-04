@@ -28,10 +28,10 @@ class MatrixSign:
         self.x_position = 0
         self.y_position = 0
         self._scroll = False
-        self.scroll_delay = 0.250   # Scroll display in seconds
-        self._brightness = 255      # Set to 0 for darkest and 255 for brightest
-        self.display_delay = 0.010  # Seconds
-        self.transition = False     # Transition on display
+        self.scroll_delay = 0.250       # Scroll display in seconds
+        self._brightness = 255          # Set to 0 for darkest and 255 for brightest
+        self.transition_delay = 0.010   # Seconds
+        self.transition = False         # Transition on display
         self.message_matrix = None
 
         self.chess_index = 0
@@ -129,7 +129,7 @@ class MatrixSign:
             self.led_matrix.setPixelColor(i, color)
             if self.transition:
                 self.led_matrix.show()
-                time.sleep(self.display_delay)
+                time.sleep(self.transition_delay)
 
         self.led_matrix.show()
 
@@ -147,6 +147,9 @@ class MatrixSign:
 
     def _get_display_matrix(self):
         """ Get the section of the message that's in the display matrix """
+        if not self.message_matrix:
+            return []   # Empty grid array
+
         message_length = len(self.message_matrix[0])
         if message_length <= self.GRID_WIDTH:
             self.scroll = False

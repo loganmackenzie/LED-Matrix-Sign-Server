@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # NeoPixel Matrix Web Server
-from flask import Flask
+from flask import Flask, render_template, request
 
 from matrix_sign import MatrixSign
 
@@ -13,6 +13,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
+    return render_template('index.html')
     led_sign.message = 'Home!'
     return 'OK\n', 200
 
@@ -41,7 +42,7 @@ def set_scroll_delay(delay):
     return 'OK\n', 200
 
 
-@app.route('/transition/<string:transition')
+@app.route('/transition/<string:transition>')
 def set_transition(transition):
     if transition.lower() == 'on':
         led_sign.transition = True
@@ -54,9 +55,27 @@ def set_transition(transition):
 
 @app.route('/transition/delay/<float:delay>')
 def set_transition_delay(delay):
-    led_sign.display_delay = delay
+    led_sign.transition_delay = delay
     return 'OK\n', 200
 
+@app.route('/update_display')
+def update_display():
+    """ Update dislay """
+    args = request.args
+
+    led_sign.scroll = ('scroll' in args)
+    if 'scroll_delay' in args:
+        led_sign.scroll_delay = args['scroll_delay']
+    led_sign.transition = ('transition' in args)
+    if 'transition_delay' in args:
+        led_sign.transition_delay = args['transition_delay']
+
+    if 'message_color' in args:
+        led_sign.color = args['message_color'].strip('#')
+    if 'message' in args:
+        led_sign.message = args['message']
+
+    return 'OK\n', 200
 
 @app.route('/chess')
 def chess():

@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
-    return render_template('index.html')
+    return render_template('index.html', height=led_sign.GRID_HEIGHT, width=led_sign.GRID_WIDTH)
     led_sign.message = 'Home!'
     return 'OK\n', 200
 
@@ -75,6 +75,13 @@ def update_display():
     if 'message' in args:
         led_sign.message = args['message']
 
+    return 'OK\n', 200
+
+@app.route('/custom_matrix')
+def set_custom_matrix():
+    """ Set custom matrix """
+    args = request.args
+    led_sign.set_custom_matrix(args)
     return 'OK\n', 200
 
 @app.route('/chess')

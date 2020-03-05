@@ -162,6 +162,15 @@ class MatrixSign:
             return [self.message_matrix[i][self.x_position:x_end] for i in range(self.GRID_HEIGHT)]
         return [self.message_matrix[i][self.x_position:] + self.message_matrix[i][:x_end] for i in range(self.GRID_HEIGHT)]
 
+    def set_custom_matrix(self, color_dict):
+        """ Set a custom matrix on the matrix """
+        self.message_matrix = [['000000'] * self.GRID_WIDTH] * self.GRID_HEIGHT
+        for key, value in color_dict.items():
+            x, y = map(int, key.split('-'))
+            self.message_matrix[y][x] = value.strip('#')
+        array = self._get_message_array(self._get_display_matrix())
+        self._display_array(array, use_color=True)
+
     def chess(self):
         self.message_matrix = CHESS_GAME_MOVES[self.chess_index]
         array = self._get_message_array(self._get_display_matrix())

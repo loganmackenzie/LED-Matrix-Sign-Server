@@ -24,7 +24,7 @@ class MatrixSign:
 
     def __init__(self):
         self._message = ''
-        self._color = Color(0, 50, 0)
+        self.color = '320000'
         self.x_position = 0
         self.y_position = 0
         self._scroll = False
@@ -67,8 +67,8 @@ class MatrixSign:
         self._display_message()
 
     def _parse_color(self, value):
-        green = int(value[:2], 16)
-        red = int(value[2:4], 16)
+        red = int(value[:2], 16)
+        green = int(value[2:4], 16)
         blue = int(value[4:], 16)
         return Color(green, red, blue)
 

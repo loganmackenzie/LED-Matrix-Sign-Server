@@ -164,11 +164,7 @@ class MatrixSign:
 
     def set_custom_matrix(self, color_dict):
         """ Set a custom matrix on the matrix """
-        self.message_matrix = [['000000'] * self.GRID_WIDTH] * self.GRID_HEIGHT
-        for key, value in color_dict.items():
-            x, y = map(int, key.split('-'))
-            self.message_matrix[y][x] = value.strip('#')
-        array = self._get_message_array(self._get_display_matrix())
+        array = [x[1].strip('#') for x in sorted(color_dict.items(), key=lambda x: x[0])]
         self._display_array(array, use_color=True)
 
     def chess(self):

@@ -111,9 +111,9 @@
                 {% for x in range(0, width) %}
                     <td>
                         {% if x % 2 == 1 %}
-                            <input type="color" name="{{ x * height + height - y - 1 }}" value="#000000" style="width: 20px">
+                            <input type="color" name="{{ (x * height) + height - y - 1 }}" value="#000000" style="width: 20px">
                         {% else %}
-                            <input type="color" name="{{ x * height + y }}" value="#000000" style="width: 20px">
+                            <input type="color" name="{{ (x * height) + y }}" value="#000000" style="width: 20px">
                         {% endif %}
                     </td>
                 {% endfor %}
